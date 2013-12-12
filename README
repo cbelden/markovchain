@@ -1,0 +1,23 @@
+Calvin Belden
+12/11/13
+
+This is the beginning of a little project I'd like to complete by Jan.  This is the bare-bones-
+functionality of what will soon integrate with a web app that will allow users to enter in songs/
+genres/artists, and in return, the program will return small phrases based off of the corresponding
+lyrics.
+
+For example, if a user inputs the "country genre,", the output phrases would be constructed based
+off of the top-40 country list.
+
+Command line example:
+
+user input: "country"
+output: ..thinking
+output: ..thinking
+output: ..thinking
+output: "i just put truck in my beer"
+output: "daddy bought a huge farm and we all dipped our trucks in beer"
+output: "cousin lovin went fishin and saw my girl"
+output: "MarkovLyrics - would you like to generate more phrases?"
+
+etc. etc.
