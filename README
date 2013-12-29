@@ -1,23 +1,13 @@
 Calvin Belden
 12/11/13
 
-This is the beginning of a little project I'd like to complete by Jan.  This is the bare-bones-
-functionality of what will soon integrate with a web app that will allow users to enter in songs/
-genres/artists, and in return, the program will return small phrases based off of the corresponding
-lyrics.
+The following project currently functions as a command line tool to generate silly text from songs that can be inputted using an json config file. A sample config file is included.
 
-For example, if a user inputs the "country genre,", the output phrases would be constructed based
-off of the top-40 country list.
+MusixMatch is a service that provides lyric data, and I have used their API to request this information.  I've used the Python Wrapper 2 to access this API programmatically.  Unfortunately, this service does not return complete lyric information.
 
-Command line example:
+Here is a link to the GitHub for the Python wrapper: https://github.com/utstikkar/pyMusiXmatch
+Here is a link to the MusixMatch API documentation: https://developer.musixmatch.com/documentation
 
-user input: "country"
-output: ..thinking
-output: ..thinking
-output: ..thinking
-output: "i just put truck in my beer"
-output: "daddy bought a huge farm and we all dipped our trucks in beer"
-output: "cousin lovin went fishin and saw my girl"
-output: "MarkovLyrics - would you like to generate more phrases?"
+In order to use this program, you will need to set up an account with MusixMatch and set the MUSIXMATCH_API_KEY environment variable to the API key associated with your account.
 
-etc. etc.
+Currently, test_markov.py shows an example program using the lyricscramble module.
