@@ -1,8 +1,6 @@
 import musixmatch.matcher as matcher
 import musixmatch.util as util
-import json
 import string
-
 
 
 class lyricfactory(object):
@@ -13,6 +11,21 @@ class lyricfactory(object):
     def __init__(self):
         pass
 
+    def request_lyrics(self, request_info):
+        """
+        input
+            request_info data from the config.json file
+
+        returns
+            the concatenated text from the lyrics returned for each song
+        """
+        txt = ""
+        for artist in request_info:
+            for song in request_info[artist]:
+                txt += self.findlyrics(artist, song)
+
+        return txt
+
     def findlyrics(self, artist, song):
         """
         input
@@ -22,15 +35,18 @@ class lyricfactory(object):
         returns
             the lyrics for that song
         """
-        resp = self.pinpointsong(artist, song)
-        #share_url = resp['track_share_url']
-        lyricinfo = resp.lyrics()
+        api_resp = self.pinpoint_song(artist, song)
+
+        if not api_resp:
+            return ''
+
+        lyricinfo = api_resp.lyrics()
         txt = lyricinfo["lyrics_body"].encode("utf8")
-        lyrics = txt.replace("******* This Lyrics is NOT for Commercial use *******", "").translate(string.maketrans("", ""), string.punctuation)
+        txt = txt.replace("******* This Lyrics is NOT for Commercial use *******", "")
 
-        return lyrics
+        return txt
 
-    def pinpointsong(self, artist, song):
+    def pinpoint_song(self, artist, song):
         """
         Uses the MusixMatch API to find the lyrics.
         """
@@ -39,15 +55,16 @@ class lyricfactory(object):
         params['q_artist'] = artist
         params['q_track'] = song
 
-        print "...searcing for lyrics"
+        print "Searching for \"%s\" lyrics by '%s'..." % (song, artist)
 
         # send api call
         try:
             resp = matcher.track(**params)
         except util.MusixMatchAPIError, e:
             print "...could not perform a lyric search."
-            print e.args
+            print e.args[0]
             return None
 
-        print "...found lyrics"
+        print "\t*Found the lyrics"
+
         return resp

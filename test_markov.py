@@ -1,19 +1,23 @@
 import lyricscramble.lyricfactory as LF
 import lyricscramble.lyric_chain as LC
+import lyricscramble.utils as utils
 
 if __name__ == '__main__':
-    artist = "drake"
-    # songs = ["started from the bottom", "underground kings", "the motion", "marvins room", "best i ever had", "shot for me"]
-    songs = ["best i ever had", "shot for me"]
-    factory = LF.lyricfactory()
-    txt = ""
-    for song in songs:
-        txt += factory.findlyrics(artist, song)
+    # Get txt from MusixMatch to use for markov chain
+    request_info = utils.RetreiveRequestInfo()
+    l_factory = LF.lyricfactory()
+    txt = l_factory.request_lyrics(request_info["artists"])
 
+    # Use txt to generate markov chain
     chain = LC.lyric_chain(txt)
 
-    # for word in chain:
-    #     print word
-    #     print chain[word]
-    phrase = chain.generate_phrase(10)
-    print phrase + '\n'
+    # Let user generate phrases
+    phrase_length = 15
+
+    while 1:
+        print chain.generate_phrase(phrase_length)
+        raw = raw_input()
+
+        if raw != '':
+            print "Quitting.."
+            break

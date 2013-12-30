@@ -4,8 +4,8 @@ import random
 
 class lyric_chain(object):
     def __init__(self, txt):
-        self.words = self.extract_words(txt)
-        self.chain = self.create_chain(self.words)
+            self.words = self.extract_words(txt)
+            self.chain = self.create_chain(self.words)
 
     def __iter__(self):
         for key in self.chain:
@@ -15,6 +15,9 @@ class lyric_chain(object):
         return self.chain[key]
 
     def extract_words(self, txt):
+        if not txt:
+            raise BaseException("No lyric text to generate chain from")
+
         polished = txt.translate(string.maketrans("", ""), string.punctuation).lower()
         words = polished.split()
         return words
@@ -26,17 +29,24 @@ class lyric_chain(object):
         occur immediately following the key in the text used to construct the chain.
         The value associated with these secondary keys is a frequency value.
 
-        ie self.chain = {word1: {subword1:freq1, subword2:freq2, ...}, ...}
+        ie self.chain = {word1: {subsequent_word1:freq1, subsequent_word2:freq2, ...}, ...}
         """
-        l_chain = {}
+
+        lyric_chain = {}
 
         for i in range(len(words) - 1):
-            if words[i] in l_chain and words[i+1] in l_chain[words[i]]:
-                    l_chain[words[i]][words[i+1]] += 1
-            else:
-                l_chain[words[i]] = {words[i+1]: 1}
+            current_word = words[i]
+            subsequent_word = words[i+1]
 
-        return l_chain
+            if current_word in lyric_chain:
+                if subsequent_word in lyric_chain[current_word]:
+                    lyric_chain[current_word][subsequent_word] += 1
+                else:
+                    lyric_chain[current_word][subsequent_word] = 1
+            else:
+                lyric_chain[current_word] = {subsequent_word: 1}
+
+        return lyric_chain
 
     def generate_phrase(self, n):
         """
@@ -44,7 +54,7 @@ class lyric_chain(object):
         """
 
         if self.chain is None:
-            raise "No markov chain in memory"
+            raise BaseException("No markov chain in memory")
 
         start = random.randrange(len(self.words))
         new_word = self.words[start]
@@ -53,24 +63,34 @@ class lyric_chain(object):
         print "...generating phrase\n"
 
         for i in range(n):
-            msg += new_word.strip() + ' '
+            msg += new_word + ' '
 
             if new_word in self.chain:
                 new_word = self.get_randword(self.chain[new_word])
             else:
-                new_word = self.get_randword(self.words)
+                new_word = self.words[random.randrange(len(self.words))]
 
         return msg.capitalize()
 
     def get_randword(self, words):
-        n = 0
+        """
+        Input
+            A dictionary of words and their frequencies
+
+        Returns
+            One of the words in the given dictionary.
+        """
+        total_occurences = 0
         count = 0
 
         for word in words:
-            n += words[word]
+            total_occurences += words[word]
 
-        idx = random.randrange(n)
+        # will be used to "randomly" return one of the options
+        idx = random.randrange(total_occurences)
 
+        # Return one of the words based on idx. Words with a higher
+        # frequency should be chosen more often
         for word in words:
             count += words[word]
             if idx <= count:
