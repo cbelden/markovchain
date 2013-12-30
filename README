@@ -13,3 +13,9 @@ In order to use this program, you will need to set up an account with MusixMatch
 Currently, test_markov.py shows an example program using the lyricscramble module.
 
 NOTE TO SELF: The current project is SUPER buggy.  Lyric text is currently not parsed correctly; should implement a better solution soon.  I'm still deciding how to treat punctuation.  I am leaning towards stripping all punctuation.  I am sure there are other errors too. Will be implementing unit tests.
+
+
+Cal's TODO:
+-correct text parsing
+-improve output to screen - make more readable
+-implement unit tests
