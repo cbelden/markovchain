@@ -6,7 +6,7 @@ if __name__ == '__main__':
     # Get txt from MusixMatch to use for markov chain
     request_info = utils.RetreiveRequestInfo()
     l_factory = LF.lyricfactory()
-    txt = l_factory.request_lyrics(request_info["artists"])
+    txt = l_factory.request_lyrics(request_info["songs"])
 
     # Use txt to generate markov chain
     chain = LC.lyric_chain(txt)

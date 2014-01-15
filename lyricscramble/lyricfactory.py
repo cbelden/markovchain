@@ -1,6 +1,5 @@
 import musixmatch.matcher as matcher
 import musixmatch.util as util
-import string
 
 
 class lyricfactory(object):
