@@ -1,9 +1,13 @@
 Calvin Belden
 12/11/13
 
-The following project currently functions as a command line tool to generate silly text from songs that can be inputted using an json config file. A sample config file is included.
+The following project creates a bigram language model based off of song lyrics specified by the user. The user
+specifies song/artist combos in a configuration file, lyric_scramble retrieves the song lyrics and then
+probabalistically generates phrases based off of the frequencies of each bigram.
 
-MusixMatch is a service that provides lyric data, and I have used their API to request this information.  I've used the Python Wrapper 2 to access this API programmatically.  Unfortunately, this service does not return complete lyric information.
+MusixMatch is a service that provides lyric data, and I have used their API to request this information.  I've used
+the Python Wrapper 2 to access this API programmatically.  Unfortunately, this service does not return complete lyric
+information.
 
 Here is a link to the GitHub for the Python wrapper: https://github.com/utstikkar/pyMusiXmatch
 Here is a link to the MusixMatch API documentation: https://developer.musixmatch.com/documentation
