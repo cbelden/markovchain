@@ -8,13 +8,13 @@ if __name__ == '__main__':
 
     # Retrieve the song lyrics specified in the user config file
     l_factory = LF.lyricfactory()
-    lyrics = l_factory.retrieve_lyrics()
+    lyrics = l_factory.retrieveLyrics()
 
     # Use lyric txt to generate language model
     m_chain = LM.language_model(lyrics)
 
     while 1:
-        print m_chain.generate_phrase()
+        print m_chain.generate_string()
         raw = raw_input()
 
         if raw != '':

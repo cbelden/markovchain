@@ -2,7 +2,7 @@ import string
 import random
 
 
-class lyric_model(object):
+class language_model(object):
     def __init__(self, txt):
             self.corpus = self.extract_words(txt)                               # stores all words from input text
             self.bigrams = self.generate_language_model(self.corpus)            # bigram language model for phrase generation
@@ -52,7 +52,7 @@ class lyric_model(object):
 
         return bigrams
 
-    def generate_string(self, n):
+    def generate_string(self):
         """
         Generates a string based on the language model
         """
@@ -65,7 +65,7 @@ class lyric_model(object):
 
         print "...generating phrase\n"
 
-        for i in range(n):
+        while 1:
 
             if new_word in self.bigrams:
                 new_word = self.get_successor(self.bigrams[new_word])
@@ -76,12 +76,12 @@ class lyric_model(object):
             msg += new_word + ' '
 
             # probabalistically decide to continue
-            if random.random() <= self.continue_p:
+            if random.random() > self.continue_p:
                 break
 
         return msg.capitalize()
 
-    def get_randword(self, tf):
+    def get_successor(self, tf):
         """
         Input
             A dictionary of words and their term frequency
