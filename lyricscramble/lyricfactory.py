@@ -1,5 +1,6 @@
 import musixmatch.matcher as matcher
 import musixmatch.util as util
+import json
 
 
 class lyricfactory(object):
@@ -9,6 +10,20 @@ class lyricfactory(object):
     """
     def __init__(self):
         pass
+
+    def retrieveLyrics(self):
+        user_request = self.readUserRequestInfo()
+        return self.request_lyrics(user_request["songs"])
+
+    def readUserRequestInfo(self):
+        """
+        Reads in the song request information from the json config file: lyric_scramble/settings/config.json
+        """
+        json_fp = open('settings/config.json', 'r')
+        data = json.load(json_fp)
+        json_fp.close()
+
+        return data
 
     def request_lyrics(self, request_info):
         """

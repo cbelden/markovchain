@@ -1,21 +1,20 @@
 import lyricscramble.lyricfactory as LF
-import lyricscramble.lyric_chain as LC
-import lyricscramble.utils as utils
+import lyricscramble.language_model as LM
+import lyricscramble.utils as scramble_utils
 
 if __name__ == '__main__':
-    # Get txt from MusixMatch to use for markov chain
-    request_info = utils.RetreiveRequestInfo()
+    # Get request info from config file
+    request_info = scramble_utils.RetreiveRequestInfo()
+
+    # Retrieve the song lyrics specified in the user config file
     l_factory = LF.lyricfactory()
-    txt = l_factory.request_lyrics(request_info["songs"])
+    lyrics = l_factory.retrieve_lyrics()
 
-    # Use txt to generate markov chain
-    chain = LC.lyric_chain(txt)
-
-    # Let user generate phrases
-    phrase_length = 15
+    # Use lyric txt to generate language model
+    m_chain = LM.language_model(lyrics)
 
     while 1:
-        print chain.generate_phrase(phrase_length)
+        print m_chain.generate_phrase()
         raw = raw_input()
 
         if raw != '':
