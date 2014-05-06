@@ -1,5 +1,5 @@
-<h3>Calvin Belden</h3>
-<h3>12/11/13</h3>
+<h5>Calvin Belden</h5>
+<h5>12/11/13</h5>
 
 <p>The following project creates a bigram language model based off of song lyrics
 specified by the user. The user specifies song/artist combos in a configuration file,
@@ -26,8 +26,8 @@ correctly; should implement a better solution soon.  I'm still deciding how to t
 I am leaning towards stripping all punctuation.  I am sure there are other errors too. Will be
 implementing unit tests.</p>
 
-
-<ul>Cal's TODO:
+<h5>Cal's TODO</h5>
+<ul>
 <li>correctly name the program, vars, functions: what I have actually created is a bigram
 language model based on a corpus composed of lyrics specified by the user. I then generate
 phrases based on this lanugage model.</li>
