@@ -92,7 +92,8 @@ class MarkovChain(object):
         return msg.capitalize()
 
     def _get_next_term(self, tf):
-        """"""
+        """Stochastically chooses the next generated term."""
+
         total_occurences = 0
         count = 0
 
