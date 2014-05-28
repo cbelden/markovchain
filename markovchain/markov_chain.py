@@ -55,7 +55,7 @@ class MarkovChain(object):
         return stripped.split()
 
     def _strip_punctuation(self, s):
-        """Strips punctuation from input string."""
+        """Strips punctuation from input string and sets all characters to lowercase."""
 
         # Convert to utf-8
         s = s.encode('utf-8', 'replace')

@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+from distutils.core import setup
+
+
+setup(name='MarkovChain',
+      version='1.0',
+      description='Generates a Markov Chain',
+      author='Cal Belden',
+      author_email='calvinbelden@gmail.com',
+      packages=['markovchain'])
