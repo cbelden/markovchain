@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 
-setup(name='MarkovChain',
+setup(name='markovchain',
       version='1.0',
       description='Generates a Markov Chain',
       author='Cal Belden',

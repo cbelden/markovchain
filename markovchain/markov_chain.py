@@ -74,16 +74,19 @@ class MarkovChain(object):
 
         while 1:
 
-            if new_word in self.bigrams:
-                new_word = self.get_successor(self.bigrams[new_word])
+            # Generate a successor word
+            if new_word in self._markov_chain:
+                new_word = self._get_next_term(self._markov_chain[new_word])
+
+            # Generate a random word if new_word is not a key in the markov chain
             else:
-                new_word = self.corpus[random.randrange(len(self.corpus))]
+                new_word = random.choice(self._markov_chain.keys())
 
             # append successor to word
             msg += new_word + ' '
 
-            # probabalistically decide to continue
-            if random.random() > self.continue_p:
+            # probabalistically decide to strop
+            if random.random() <= self._stop_p:
                 break
 
         return msg.capitalize()
