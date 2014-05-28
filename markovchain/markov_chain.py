@@ -11,6 +11,17 @@ class MarkovChain(object):
         self._markov_chain = self._construct_chain(text)        # the underlyng markov chain
         self._stop_p = 0.1                                      # set probabality that a generated phrase ends
 
+    def __iter__(self):
+        """Iterates over the terms in the underlying Markov Chain."""
+
+        for term, consecutive_terms in self._markov_chain.iteritems():
+            yield term, consecutive_terms
+
+    def __getitem__(self, key):
+        """Returns the bigrams for a given term."""
+
+        return self._markov_chain[key]
+
     def _construct_chain(self, text):
         """Constructs the underlying Markov Chain."""
 
