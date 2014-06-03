@@ -82,20 +82,26 @@ class MarkovChain(object):
     def generate_phrase(self, max_size=None, min_words=None):
         """Generates a phrase by performing random walk on the Markov chain."""
 
-        # Negative values raise an exception
-        if max_size and max_size < 0:
-            raise ValueError("Expected positive value for max_size")
-        if min_words and min_words < 0:
-            raise ValueError("Expected positive value for min_words")
+        # Invalid input values raise an exception
+        valid = True
+
+        if max_size:
+            valid = type(max_size) is int and max_size >= 0
+
+        if min_words:
+            valid = valid and type(min_words) is int and min_words >= 0
+
+        if not valid:
+            raise ValueError("Expected positive int value(s) for input.")
+
+        # If both parameters are present, make sure parameters are reasonable
+        if max_size and min_words:
+            if 5*min_words >= max_size:
+                raise ValueError("max_size paramemeter must be at least five times larger than min_words.")
 
         new_word = ''
         msg = ''
         word_count = 0
-
-        # Make sure parameters are reasonable
-        if max_size and min_words:
-            if 5*min_words >= max_size:
-                raise ValueError("max_size parameter must be at least five times larger than min_words.")
 
         while 1:
 
@@ -108,7 +114,7 @@ class MarkovChain(object):
                 new_word = random.choice(self._markov_chain.keys())
 
             # Check if new word will push us over the character limit
-            if max_size and len(msg) + len(new_word) > max_size:
+            if max_size and len(msg) + len(new_word) >= max_size:
                 break
 
             # Append successor to word
@@ -118,11 +124,11 @@ class MarkovChain(object):
             if min_words and new_word is not '.':
                 word_count += 1
 
-            # probabalistically decide to strop
+            # probabalistically decide to stop
             if word_count >= min_words and random.random() <= self._stop_p:
                 break
 
-        return msg.capitalize()
+        return msg.rstrip().capitalize()
 
     def _get_next_term(self, tf):
         """Stochastically chooses the next generated term."""
