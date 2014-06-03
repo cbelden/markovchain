@@ -1,11 +1,16 @@
 import string
 import random
+import re
 
 
 class MarkovChain(object):
 
     def __init__(self, text):
         """Generates the underlying Markov Chain."""
+
+        # Declare some 'constants'
+        self._ENDSENTENCE = 'endsentence'
+        self._BEGINSENTENCE = 'beginsentence'
 
         random.seed()                                           # set seed based on current time
         self._markov_chain = self._construct_chain(text)        # the underlyng markov chain
@@ -26,7 +31,7 @@ class MarkovChain(object):
         """Constructs the underlying Markov Chain."""
 
         if not text:
-            raise Exception('No text to create the Markov Chain.')
+            raise TypeError('Expected a non empty value for "text."')
 
         words = self._extract_words(text)
         bigrams = {}
@@ -55,23 +60,42 @@ class MarkovChain(object):
         return stripped.split()
 
     def _strip_punctuation(self, s):
-        """Strips punctuation from input string and sets all characters to lowercase."""
+        """Strips punctuation (except periods) from input string and sets all characters to lowercase."""
 
         # Convert to utf-8
         s = s.encode('utf-8', 'replace')
 
+        # Convert all periods to markers denoting the end and beginning
+        # of a sentence.
+        end_sentence = ' %s ' % (self._ENDSENTENCE)
+        s = re.sub('\.{1}', end_sentence, s)
+
         # Strip punctuation
         table = string.maketrans("", "")
         stripped = s.translate(table, string.punctuation)
+
+        # Replace periods
+        stripped = re.sub(self._ENDSENTENCE, '.', stripped)
 
         return stripped.lower()
 
     def generate_phrase(self, max_size=None, min_words=None):
         """Generates a phrase by performing random walk on the Markov chain."""
 
+        # Negative values raise an exception
+        if max_size and max_size < 0:
+            raise ValueError("Expected positive value for max_size")
+        if min_words and min_words < 0:
+            raise ValueError("Expected positive value for min_words")
+
         new_word = ''
         msg = ''
         word_count = 0
+
+        # Make sure parameters are reasonable
+        if max_size and min_words:
+            if 5*min_words >= max_size:
+                raise ValueError("max_size parameter must be at least five times larger than min_words.")
 
         while 1:
 
@@ -90,8 +114,8 @@ class MarkovChain(object):
             # Append successor to word
             msg += new_word + ' '
 
-            # Increment word_count (if we need to count)
-            if min_words:
+            # Increment word_count if min_words specified (and 'word' is not a period)
+            if min_words and new_word is not '.':
                 word_count += 1
 
             # probabalistically decide to strop
