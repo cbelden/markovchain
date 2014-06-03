@@ -66,11 +66,12 @@ class MarkovChain(object):
 
         return stripped.lower()
 
-    def generate_phrase(self):
-        """Generates a phrase based on the lyric corpus."""
+    def generate_phrase(self, max_size=None, min_words=None):
+        """Generates a phrase by performing random walk on the Markov chain."""
 
         new_word = ''
         msg = ''
+        word_count = 0
 
         while 1:
 
@@ -82,11 +83,19 @@ class MarkovChain(object):
             else:
                 new_word = random.choice(self._markov_chain.keys())
 
-            # append successor to word
+            # Check if new word will push us over the character limit
+            if max_size and len(msg) + len(new_word) > max_size:
+                break
+
+            # Append successor to word
             msg += new_word + ' '
 
+            # Increment word_count (if we need to count)
+            if min_words:
+                word_count += 1
+
             # probabalistically decide to strop
-            if random.random() <= self._stop_p:
+            if word_count >= min_words and random.random() <= self._stop_p:
                 break
 
         return msg.capitalize()
