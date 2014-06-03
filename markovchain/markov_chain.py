@@ -14,7 +14,7 @@ class MarkovChain(object):
 
         random.seed()                                           # set seed based on current time
         self._markov_chain = self._construct_chain(text)        # the underlyng markov chain
-        self._stop_p = 0.07                                     # set probabality that a generated phrase ends
+        self._stop_p = 0.10                                     # set probabality that a generated phrase ends
 
     def __iter__(self):
         """Iterates over the terms in the underlying Markov Chain."""
@@ -125,8 +125,9 @@ class MarkovChain(object):
                 word_count += 1
 
             # probabalistically decide to stop
-            if word_count >= min_words and random.random() <= self._stop_p:
-                break
+            if not min_words or word_count >= min_words:
+                if random.random() <= self._stop_p:
+                    break
 
         return msg.rstrip().capitalize()
 
